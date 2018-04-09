@@ -34,7 +34,7 @@ for j in xrange(60000):
     l2_error = y - l2
     
     if (j% 10000) == 0:
-        print "Error:" + str(np.mean(np.abs(l2_error)))
+        print ("Error:" + str(np.mean(np.abs(l2_error))))
         
     # in what direction is the target value?
     # were we really sure? if so, don't change too much.
@@ -51,5 +51,5 @@ for j in xrange(60000):
     syn0 += l0.T.dot(l1_delta)
 
 
-print "Output After Training:"
-print l2
+print("Output After Training:")
+print(l2)
