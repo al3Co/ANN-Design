@@ -53,6 +53,7 @@ def importAndPrepare():
 	sc = StandardScaler()
 	X_train = sc.fit_transform(X_train)
 	X_test = sc.transform(X_test)
+	print(X_test, y_test)
 	return(X_train, X_test, y_train, y_test, sc)
 
 
@@ -189,7 +190,7 @@ def createANNbest(X_train, X_test, y_train):
 if __name__ == "__main__":
 	X_train, X_test, y_train, y_test, sc = importAndPrepare()
 	# classifier, y_pred = createANN(X_train, X_test, y_train)
-	classifier, y_pred =createANNbest(X_train, X_test, y_train)
-	homework(classifier, sc, y_test, y_pred)
+	# classifier, y_pred =createANNbest(X_train, X_test, y_train)
+	# homework(classifier, sc, y_test, y_pred)
 	# evaluatingANN(X_train, y_train)
 	#tunningANN(X_train, y_train)	# this takes long time
