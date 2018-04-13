@@ -30,12 +30,10 @@ def importAndPrepare():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.30, random_state = 0)
     
     # Feature Scaling
-    sc = StandardScaler()
+    from sklearn.preprocessing import MinMaxScaler
+    sc = MinMaxScaler(feature_range = (0, 1))
     X_train = sc.fit_transform(X_train)
-    X_test = sc.transform(X_test)
-    
-    y_train = sc.fit_transform(y_train) 
-    y_test = sc.transform(y_test)
+    y_train = sc.fit_transform(y_train)
     
     # print(X_test, y_test)
     return(X_train, X_test, y_train, y_test, sc)
@@ -100,19 +98,19 @@ def evaluatingANN(X_train, y_train):
 # Tuning the ANN
 def build_classifier2(optimizer):
     classifier = Sequential()
-    classifier.add(Dense(activation="sigmoid", input_dim=10, units=64, kernel_initializer="uniform"))
-    classifier.add(Dense(activation="sigmoid", units=32, kernel_initializer="uniform"))
-    classifier.add(Dense(activation="sigmoid", units=16, kernel_initializer="uniform"))
+    classifier.add(Dense(activation="relu", units=64, kernel_initializer="uniform", input_dim=10))
+    classifier.add(Dense(activation="relu", units=32, kernel_initializer="uniform"))
+    classifier.add(Dense(activation="relu", units=16, kernel_initializer="uniform"))
     classifier.add(Dense(activation="relu", units=8, kernel_initializer="uniform"))
-    classifier.add(Dense(activation="relu", units=4, kernel_initializer="uniform"))
-    classifier.compile(optimizer = optimizer, loss = 'mean_squared_error', metrics = ['acc'])
+    classifier.add(Dense(activation="sigmoid", units=4, kernel_initializer="uniform"))
+    classifier.compile(optimizer = optimizer, loss = 'mean_squared_error', metrics = ['acc', 'mae'])
     return classifier
 
 def tuningANN(X_train, y_train):
 	classifier = KerasClassifier(build_fn = build_classifier2)
 	parameters = {'batch_size': [10, 15, 32],
 	              'epochs': [100, 300, 500],
-	              'optimizer': ['adam', 'nadam', 'adadelta', 'sgd', 'TFOptimizer', 'RMSprop']}
+	              'optimizer': ['adam', 'nadam', 'adadelta', 'sgd', 'RMSprop']}
 	grid_search = GridSearchCV(estimator = classifier,
 	                           param_grid = parameters,
 	                           scoring = 'accuracy')
