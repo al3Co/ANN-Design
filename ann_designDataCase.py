@@ -28,14 +28,13 @@ y = dataset.iloc[:, 5:9].values		# IMU Quat
 print(len(X[0]), len(y[0]))
 
 # Splitting the dataset into the Training set and Test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.10, random_state = 0)
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (0, 1))
 X_train = sc.fit_transform(X_train)
 y_train = sc.fit_transform(y_train)
-
 # ANN
 
 classifier = Sequential()
@@ -44,14 +43,14 @@ classifier.add(Dense(units = 256, kernel_initializer = 'uniform', activation = '
 classifier.add(Dense(units = 128, kernel_initializer = 'uniform', activation = 'relu'))
 #classifier.add(Dropout(rate = 0.1))
 classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'sigmoid'))
-classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics = ['mae', 'acc'])
+classifier.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics = ['mae', 'acc'])
 classifier.fit(X_train, y_train, batch_size = 32, epochs = 500)
 # Predicting the Test set results
-y_pred = classifier.predict(X)
-y_final = sc.inverse_transform(y_pred)
+y_final = classifier.predict(X_test)
+y_final = sc.inverse_transform(y_final)
 #print(y_final)
 
-plt.plot(y, color = 'red', label = 'Real')
+plt.plot(y_test, color = 'red', label = 'Test')
 plt.plot(y_final, color = 'blue', label = 'Predicted')
 plt.title('Data Prediction')
 plt.xlabel('Sample')
