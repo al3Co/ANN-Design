@@ -27,7 +27,7 @@ def importAndPrepare():
     y = dataset.iloc[:, 5:9].values		# IMU Quat
     
     # Splitting the dataset into the Training set and Test set
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.30, random_state = 0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
     
     # Feature Scaling
     from sklearn.preprocessing import MinMaxScaler
@@ -44,13 +44,13 @@ def importAndPrepare():
 # Create the ANN
 def createANN(X_train, X_test, y_train):
     classifier = Sequential()
-    classifier.add(Dense(units = 14, kernel_initializer = 'uniform', activation = 'relu', input_dim = 10))
+    classifier.add(Dense(units = 14, kernel_initializer = 'uniform', activation = 'sigmoid', input_dim = 10))
     classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 12, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 12, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 10, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 10, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.add(Dropout(rate = 0.1))
     classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics = ['mae', 'acc'])
@@ -138,8 +138,8 @@ def createANNbest(X_train, X_test, y_train):
 
 if __name__ == "__main__":
 	X_train, X_test, y_train, y_test, sc = importAndPrepare()
-	# classifier, y_pred = createANN(X_train, X_test, y_train)
+	classifier, y_pred = createANN(X_train, X_test, y_train)
 	# classifier, y_pred = createANNbest(X_train, X_test, y_train)
-	# singlePrediction(classifier, sc, y_test, y_pred)
+	singlePrediction(classifier, sc, y_test, y_pred)
 	# evaluatingANN(X_train, y_train)
-	tuningANN(X_train, y_train)	# this takes long time
+	# tuningANN(X_train, y_train)	# this takes long time
