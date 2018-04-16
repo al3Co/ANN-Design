@@ -66,14 +66,14 @@ def createANN(X_train, X_test, y_train):
 def singlePrediction(classifier, sc, y_test, y_pred):
 	# Feature Scaling
 	singleObservation = np.array([[1.54, 2.08, 1.53, 1.7, 1.5, 1.14, 2.29, 1.8, 1.51, 1.81]])
-	singleObservation = sc.transform(singleObservation)
+	singleObservation = sc.transform(singleObservation.T)
 	new_prediction = classifier.predict(singleObservation)
 	print(new_prediction)
 
 	# Making the Confusion Matrix
 	# cm = confusion_matrix(y_test, y_pred)
-   # print accuracy_score(expected, y_test)
-   # print classification_report(expected, y_test)
+	# print accuracy_score(expected, y_test)
+	# print classification_report(expected, y_test)
 	# print(cm)
 
 # Evaluating, Improving and Tuning the ANN
