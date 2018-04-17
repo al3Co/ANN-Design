@@ -1,3 +1,10 @@
+"""
+Created on Fri Apr 14 11:05:33 2018
+
+This script create manually a ANN to predict the quaternions given on myData.csv file
+
+"""
+
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
