@@ -1,29 +1,26 @@
 import numpy as np
+import pandas as pd
+from tqdm import tqdm
 
 def nonlin(x,deriv=False):
     if(deriv==True):
         return x*(1-x)
     return 1/(1+np.exp(-x))
 
+dataset = pd.read_csv('myData.csv')
 # Input dataset matrix where each row is a training example   
-X = np.array([[0,0,1],
-            [0,1,1],
-            [1,0,1],
-            [1,1,1]])
+X = dataset.iloc[:, 12:22].values
 
 # Output dataset matrix where each row is a training example          
-y = np.array([[1],
-            [0],
-            [0],
-            [1]])
+y = dataset.iloc[:, 5:6].values
 
 np.random.seed(1)
 
 # randomly initialize our weights with mean 0
-syn0 = 2*np.random.random((3,4)) - 1    # First layer of weights, Synapse 0, connecting l0 to l1.
-syn1 = 2*np.random.random((4,1)) - 1    # Second layer of weights, Synapse 1, connecting l1 to l2.
+syn0 = 2*np.random.random((len(X[0]),len(X))) - 1   # First layer of weights, Synapse 0, connecting l0 to l1.
+syn1 = 2*np.random.random((len(y),len(y[0]))) - 1    # Second layer of weights, Synapse 1, connecting l1 to l2.
 
-for j in xrange(60000):
+for j in tqdm(range(60000)):
 
     # Feed forward through layers 0, 1, and 2
     l0 = X                          # First Layer of the Network, specified by the input data
