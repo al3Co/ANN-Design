@@ -14,11 +14,10 @@ from pandas import DataFrame
 from pandas import concat
 
 # Importing the training set
-dataset_train = pd.read_csv('myData.csv')
-flexSens = dataset_train.iloc[:, 12:22].values  
-IMUquat = dataset_train.iloc[:, 5:9].values
-training_set = np.concatenate((IMUquat.T, flexSens.T))
-training_set = training_set.T
+dataset = pd.read_csv('all_27.csv')
+X = dataset.iloc[:, 4:14].values 
+y = dataset.iloc[:, 0:4].values
+training_set = np.append(y, X, axis = 1)
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
