@@ -102,7 +102,3 @@ regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 dataset_train = pd.read_csv('myData.csv')
 real_sensor_values = dataset_train.iloc[:, 12:22].values      # flex sensor dataset
 
-
-
-
-
