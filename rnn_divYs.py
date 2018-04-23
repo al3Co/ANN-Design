@@ -59,7 +59,7 @@ def classifierAnn(X, y):
     regressor.add(Dropout(0.2))
     regressor.add(Dense(units = 1))
     regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
-    regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+    regressor.fit(X_train, y_train, epochs = 300, batch_size = 32)
     
     X_test = X_train
     predicted_stock_price = regressor.predict(X_test)
