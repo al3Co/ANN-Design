@@ -4,6 +4,9 @@ Created on Thu Apr 19 16:47:44 2018
 
 @author: Aldo Contreras
 """
+# import os to TensorFlow warnings, doesn't enable AVX/FMA
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Importing the libraries
 import numpy as np
@@ -33,15 +36,16 @@ def importData():
 def classifierAnn(X, y):
     # Feature Scaling
     training_set = np.append(y, X, axis = 1)
-    sc = MinMaxScaler(feature_range = (0, 1))
-    training_set_scaled = sc.fit_transform(training_set)
+    #sc = MinMaxScaler(feature_range = (0, 1))
+    #training_set_scaled = sc.fit_transform(training_set)
+    training_set_scaled = training_set
     # Creating a data structure with 60 timesteps and 1 output
     X_train = []
     y_train = []
-    timeSteps = 60
+    timeSteps = 2
     for elements in range(len(training_set_scaled[0])):
         for i in range(timeSteps, len(training_set_scaled)):
-            X_train.append(training_set_scaled[i-60:i, elements])
+            X_train.append(training_set_scaled[i-timeSteps:i, elements])
             y_train.append(training_set_scaled[i, elements])
     
     X_train, y_train = np.array(X_train), np.array(y_train)
@@ -59,15 +63,16 @@ def classifierAnn(X, y):
     regressor.add(Dropout(0.2))
     regressor.add(Dense(units = 1))
     regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
-    regressor.fit(X_train, y_train, epochs = 300, batch_size = 32)
+    regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
     
     X_test = X_train
-    predicted_stock_price = regressor.predict(X_test)
-    predicted_stock_price = sc.inverse_transform(predicted_stock_price)
-    return(regressor, predicted_stock_price)
+    predicted = regressor.predict(X_test)
+    # predicted_stock_price = sc.inverse_transform(predicted)
+    return(regressor, predicted)
 
 def plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3):
     fig, axs = plt.subplots(2, 2)
+    plt.suptitle('Test -> Red Predicted -> Blue', fontsize=12)
     axs[0,0].set_title('Q1')
     axs[0,0].plot(y0, color = 'red', label = 'Test')
     axs[0,0].plot(y_pred0, color = 'blue', label = 'Predicted')
