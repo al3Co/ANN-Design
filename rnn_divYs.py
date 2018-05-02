@@ -4,9 +4,9 @@ Created on Thu Apr 19 16:47:44 2018
 
 @author: Aldo Contreras
 """
-# import os to TensorFlow warnings, doesn't enable AVX/FMA
-import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+# # import os to TensorFlow warnings, doesn't enable AVX/FMA
+# import os
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Importing the libraries
 import numpy as np
