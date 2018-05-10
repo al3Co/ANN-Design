@@ -43,7 +43,7 @@ def classifierAnn(X, y):
     # classifier.add(Dropout(rate = 0.1))
     classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'tanh')) #tanh linear
     classifier.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
-    classifier.fit(X_train, y_train, batch_size = 14, epochs = 100)
+    classifier.fit(X_train, y_train, batch_size = 27, epochs = 100)
     # Predicting the Test set results
     y_pred = classifier.predict(X)
     return(classifier, y_pred)
