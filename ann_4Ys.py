@@ -22,7 +22,7 @@ from keras.layers import Dropout
 # Data Preprocessing
 def importAndPrepare():
     # Importing the dataset
-    dataset = pd.read_csv('all_27.csv')
+    dataset = pd.read_csv('data/all_27.csv')
     X = dataset.iloc[:, 4:14].values	# flex sensor dataset
     y = dataset.iloc[:, 0:4].values		# IMU Quat
     # Splitting the dataset into the Training set and Test set
@@ -45,7 +45,7 @@ def createANN(X, X_train, X_test, y_train):
     # classifier.add(Dropout(rate = 0.1))
     classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'linear')) #tanh linear
     classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics = ['acc'])
-    classifier.fit(X_train, y_train, batch_size = 27, epochs = 1000)
+    classifier.fit(X_train, y_train, batch_size = 27, epochs = 300)
     # Predicting the Test set results
     y_pred = classifier.predict(X)
     # y_pred = sc.inverse_transform(y_pred)

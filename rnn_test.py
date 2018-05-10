@@ -14,7 +14,7 @@ from pandas import DataFrame
 from pandas import concat
 
 # Importing the training set
-dataset = pd.read_csv('all_27.csv')
+dataset = pd.read_csv('data/all_27.csv')
 X = dataset.iloc[:, 4:14].values 
 y = dataset.iloc[:, 0:4].values
 training_set = np.append(y, X, axis = 1)

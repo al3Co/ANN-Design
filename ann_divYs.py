@@ -22,7 +22,7 @@ from keras.layers import Dropout
 
 # Importing the dataset
 def importData():
-    dataset = pd.read_csv('all_27.csv')
+    dataset = pd.read_csv('data/all_27.csv')
     X = dataset.iloc[:, 4:14].values	# flex sensor dataset
     y0 = dataset.iloc[:, 0:1].values		# IMU Quat1
     y1 = dataset.iloc[:, 1:2].values		# IMU Quat2
