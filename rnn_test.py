@@ -14,9 +14,9 @@ from pandas import DataFrame
 from pandas import concat
 
 # Importing the training set
-dataset = pd.read_csv('data/all_27.csv')
-X = dataset.iloc[:, 4:14].values 
-y = dataset.iloc[:, 0:4].values
+dataset = pd.read_csv('data/comboAll.csv')
+X = dataset.iloc[:, 20:35].values   # FlexS
+y = dataset.iloc[:, 13:17].values   # IMUq
 training_set = np.append(y, X, axis = 1)
 
 # Feature Scaling
@@ -47,7 +47,7 @@ for nums in range(numData):
 #for nums in range(len(flexSens_set_scaled[0])):
 #    for i in range(timeSteps, len(flexSens_set_scaled)):
 #        X_train.append(flexSens_set_scaled[(i-timeSteps):i, nums])
-#        
+#
 #for nums in range(len(IMUquat_set_scaled[0])):
 #    for i in range(timeSteps, len(IMUquat_set_scaled)):
 #        #y_train.append(IMUquat_set_scaled[(i-timeSteps):i, nums])
@@ -100,4 +100,3 @@ regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
 
 dataset_train = pd.read_csv('myData.csv')
 real_sensor_values = dataset_train.iloc[:, 12:22].values      # flex sensor dataset
-

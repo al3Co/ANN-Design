@@ -22,12 +22,12 @@ from keras.layers import Dropout
 
 # Importing the dataset
 def importData():
-    dataset = pd.read_csv('data/all_27.csv')
-    X = dataset.iloc[:, 4:14].values	# flex sensor dataset
-    y0 = dataset.iloc[:, 0:1].values		# IMU Quat1
-    y1 = dataset.iloc[:, 1:2].values		# IMU Quat2
-    y2 = dataset.iloc[:, 2:3].values		# IMU Quat3
-    y3 = dataset.iloc[:, 3:4].values		# IMU Quat4
+    dataset = pd.read_csv('data/comboAll.csv')
+    X = dataset.iloc[:, 20:35].values	# flex sensor dataset
+    y0 = dataset.iloc[:, 13:14].values		# IMU Quat1 dataset.iloc[:, 13:17].values
+    y1 = dataset.iloc[:, 14:15].values		# IMU Quat2
+    y2 = dataset.iloc[:, 15:16].values		# IMU Quat3
+    y3 = dataset.iloc[:, 16:17].values		# IMU Quat4
     return(X, y0, y1, y2, y3)
 
 def classifierAnn(X, y):
@@ -35,7 +35,7 @@ def classifierAnn(X, y):
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
     y_train = sc.fit_transform(y_train)
-    
+
     classifier = Sequential()
     classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'tanh', input_dim = 10))
     # classifier.add(Dropout(rate = 0.1))
@@ -76,8 +76,6 @@ def main():
     [classifier_y3, y_pred3] = classifierAnn(X, y3)
     # Plot all
     plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3)
-    
+
 if __name__ == "__main__":
     main()
-    
-    
