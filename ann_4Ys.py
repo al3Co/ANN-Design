@@ -5,6 +5,7 @@ Created on Wed Apr 18 16:05:10 2018
 @author: Aldo Contreras
 """
 # Importing the libraries
+from math import ceil
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -19,12 +20,73 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import Dropout
 
+
+def usrDataFnc():
+    while True:
+        try:
+            prompt = ('[0]All [1]COMBO [2]CRUZEXT [3]CRUZINT [4]ELEFRONT [5]LATERAL [6]ROTZ \nTest: ')
+            kindOfData = int(input(prompt))
+            if (kindOfData >= 0) and (kindOfData <= 6):
+                break
+        except ValueError:
+            print('Select a number between 0 and 6')
+    while True:
+        try:
+            prompt = ('Kind\n [1] FlexS vs ShoulderAng\n [2] FlexS+IMUq vs ShoulderAng\n '
+                    '[3] IMUq vs ShoulderAng\n [4] PCA vs Shoulder\n [5] FlexS vs IMUq\n '
+                    '[6] PCA vs IMUq\n Select: ')
+            kindOfTest = int(input(prompt))
+            if (kindOfTest >= 1) and (kindOfTest <= 6):
+                break
+        except ValueError:
+            print('ValueError')
+    return(kindOfData, kindOfTest)
+
+def loadWSFunc(kindOfData):
+    # [0]All, [1]COMBO, [2]CRUZEXT, [3]CRUZINT, [4]ELEFRONT, [5]LATERAL, [6]ROTZ
+    if kindOfData == 1:
+        dataset = pd.read_csv('data/comboAll.csv')
+    elif kindOfData == 2:
+        dataset = pd.read_csv('data/cruzadoextAll.csv')
+    elif kindOfData == 3:
+        dataset = pd.read_csv('data/cruzadointAll.csv')
+    elif kindOfData == 4:
+        dataset = pd.read_csv('data/frontalAll.csv')
+    elif kindOfData == 5:
+        dataset = pd.read_csv('data/lateralAll.csv')
+    elif kindOfData == 6:
+        dataset = pd.read_csv('data/rotacionzAll.csv')
+    elif kindOfData == 0:
+        dataset = pd.read_csv('data/allData.csv')
+    return dataset
+
+def dataToRNN(dataset, kindOfTest):
+    # [1]FlexS vs ShoulderAng [2]FlexS+IMUq vs ShoulderAng [3]IMUq vs ShoulderAng
+    # [4]PCA vs ShoulderAng [5] FlexS vs IMUq [6] PCA vs IMUq
+    if kindOfTest == 1:     # reviewed
+        input = dataset.iloc[:, 20:35].values   # FlexS
+        target = dataset.iloc[:, 41:44].values  # ShoulderAng
+    elif kindOfTest == 2:
+        input1 = dataset.iloc[:, 20:35].values  # FlexS
+        input2 = dataset.iloc[:, 13:17].values  # IMUq
+        input = np.concatenate([input1, input2], axis=1)    # FlexS + IMUq
+        target = dataset.iloc[:, 41:44].values  # ShoulderAng
+    elif kindOfTest == 3:   # reviewed
+        input = dataset.iloc[:, 13:17].values   # IMUq
+        target = dataset.iloc[:, 41:44].values  # ShoulderAng
+    elif kindOfTest == 4:
+        input = dataset.iloc[:, 20:35].values   # TODO PCA analysis
+        target = dataset.iloc[:, 41:44].values  # ShoulderAng
+    elif kindOfTest == 5:   # reviewed
+        input = dataset.iloc[:, 20:35].values   # FlexS
+        target = dataset.iloc[:, 13:17].values  # IMUq
+    elif kindOfTest == 6:   # reviewed
+        input = dataset.iloc[:, 20:35].values   # TODO PCA analysis
+        target = dataset.iloc[:, 13:17].values   # IMUq
+    return (input, target)
+
 # Data Preprocessing
-def importAndPrepare():
-    # Importing the dataset
-    dataset = pd.read_csv('data/all_27.csv')
-    X = dataset.iloc[:, 4:14].values	# flex sensor dataset
-    y = dataset.iloc[:, 0:4].values		# IMU Quat
+def importAndPrepare(X, y):
     # Splitting the dataset into the Training set and Test set
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = 0)
     # Feature Scaling
@@ -38,12 +100,17 @@ def importAndPrepare():
 
 # Create the ANN
 def createANN(X, X_train, X_test, y_train):
+    # size of tests
+    [rowX, colX] = np.shape(X_train)
+    [row, col] = np.shape(y_train)
+    unit = ceil((colX + col)/2)
+
     classifier = Sequential()
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'tanh', input_dim = 10))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh', input_dim = colX))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'tanh'))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh'))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 4, kernel_initializer = 'uniform', activation = 'linear')) #tanh linear
+    classifier.add(Dense(units = col, kernel_initializer = 'uniform', activation = 'linear')) #tanh linear
     classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
     classifier.fit(X_train, y_train, batch_size = 27, epochs = 300)
     # Predicting the Test set results
@@ -55,6 +122,7 @@ def createANN(X, X_train, X_test, y_train):
 # Single prediction function
 def singlePrediction(classifier, sc, y_test, y_pred):
 	# Feature Scaling
+    # TODO: singleObservation = first line of input data
 	singleObservation = np.array([[1.54, 2.08, 1.53, 1.7, 1.5, 1.14, 2.29, 1.8, 1.51, 1.81]])
 	#singleObservation = sc.transform(singleObservation)
 	new_prediction = classifier.predict(singleObservation)
@@ -81,9 +149,14 @@ def plotData(y_pred, y):
     axs[1,1].plot(y_pred[:, 3], color = 'blue', label = 'Predicted')
     plt.show()
 
+def main():
+    [kindOfData, kindOfTest]=usrDataFnc()
+    dataset = loadWSFunc(kindOfData)
+    [input, target] = dataToRNN(dataset, kindOfTest)
+    X, y, X_train, X_test, y_train, y_test, sc = importAndPrepare(input, target)
+    [classifier, y_pred] = createANN(X, X_train, X_test, y_train)
+    # singlePrediction(classifier, sc, y_test, y_pred)
+    plotData(y_pred, y)
+
 if __name__ == "__main__":
-	X, y, X_train, X_test, y_train, y_test, sc = importAndPrepare()
-	classifier, y_pred = createANN(X, X_train, X_test, y_train)
-	# singlePrediction(classifier, sc, y_test, y_pred)
-	plotData(y_pred, y)
-	
+    main()
