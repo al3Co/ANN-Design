@@ -62,7 +62,7 @@ def classifierAnn(X, y):
     regressor.add(LSTM(units = 50))
     regressor.add(Dropout(0.2))
     regressor.add(Dense(units = 1))
-    regressor.compile(optimizer = 'adam', loss = 'mean_squared_error')
+    regressor.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
     regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
     
     X_test = X_train
