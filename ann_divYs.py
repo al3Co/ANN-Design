@@ -6,6 +6,7 @@ Created on Thu Apr 19 13:46:28 2018
 """
 
 # Importing the libraries
+from math import ceil
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -21,29 +22,37 @@ from keras.layers import Dense
 from keras.layers import Dropout
 
 # Importing the dataset
-def importData():
-    dataset = pd.read_csv('data/comboAll.csv')
-    X = dataset.iloc[:, 20:35].values	# flex sensor dataset
-    y0 = dataset.iloc[:, 13:14].values		# IMU Quat1 dataset.iloc[:, 13:17].values
-    y1 = dataset.iloc[:, 14:15].values		# IMU Quat2
-    y2 = dataset.iloc[:, 15:16].values		# IMU Quat3
-    y3 = dataset.iloc[:, 16:17].values		# IMU Quat4
+import usrInput
+
+def importAndPrepare(X, y):
+    y0 = y[:,0]
+    y1 = y[:,1]
+    y2 = y[:,2]
+    try:
+        y3 = y[:,3]
+    except IndexError:
+        y3 = 0
     return(X, y0, y1, y2, y3)
 
 def classifierAnn(X, y):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = 0)
     sc = StandardScaler()
     X_train = sc.fit_transform(X_train)
-    y_train = sc.fit_transform(y_train)
+    # y_train = sc.fit_transform(y_train)
+
+    [rowX, colX] = np.shape(X_train)
+    # [row, col] = np.shape(y_train)
+    col = 1
+    unit = ceil((colX + col)/2)
 
     classifier = Sequential()
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'tanh', input_dim = 10))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh', input_dim = colX))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 8, kernel_initializer = 'uniform', activation = 'tanh'))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh'))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'tanh')) #tanh linear
-    classifier.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
-    classifier.fit(X_train, y_train, batch_size = 27, epochs = 100)
+    classifier.add(Dense(units = col, kernel_initializer = 'uniform', activation = 'linear')) #tanh linear
+    classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
+    classifier.fit(X_train, y_train, batch_size = 27, epochs = 300)
     # Predicting the Test set results
     y_pred = classifier.predict(X)
     return(classifier, y_pred)
@@ -65,17 +74,14 @@ def plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3):
     plt.show()
 
 def main():
-    [X, y0, y1, y2, y3] = importData()
-    # y0
-    [classifier_y0, y_pred0] = classifierAnn(X, y0)
-    # y1
-    [classifier_y1, y_pred1] = classifierAnn(X, y1)
-    # y2
-    [classifier_y2, y_pred2] = classifierAnn(X, y2)
-    # y3
-    [classifier_y3, y_pred3] = classifierAnn(X, y3)
-    # Plot all
-    plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3)
+    [input, target] = usrInput.getDataset()
+    [X, y0, y1, y2, y3] = importAndPrepare(input, target)
+    [classifier_y0, y_pred0] = classifierAnn(X, y0)                 # y0
+    [classifier_y1, y_pred1] = classifierAnn(X, y1)                 # y1
+    [classifier_y2, y_pred2] = classifierAnn(X, y2)                 # y2
+    if y3 != 0:[classifier_y3, y_pred3] = classifierAnn(X, y3)      # y3
+    else: y_pred3 = 0
+    plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3)    # Plot all
 
 if __name__ == "__main__":
     main()
