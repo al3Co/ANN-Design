@@ -5,8 +5,8 @@ Created on Thu May 10 16:05:10 2018
 @author: Aldo Contreras
 """
 # Importing the libraries
-import numpy as np
-import matplotlib.pyplot as plt
+# import numpy as np
+# import matplotlib.pyplot as plt
 import pandas as pd
 
 def usrDataFnc():
@@ -73,12 +73,11 @@ def dataToRNN(dataset, kindOfTest):
         target = dataset.iloc[:, 13:17].values   # IMUq
     return (input, target)
 
-def main():
+def getDataset():
     [kindOfData, kindOfTest]=usrDataFnc()
     dataset = loadWSFunc(kindOfData)
     [input, target] = dataToRNN(dataset, kindOfTest)
-    print(input)
-    print(target)
+    return(input, target)
 
 if __name__ == "__main__":
-    main()
+    [input, target] = getDataset()
