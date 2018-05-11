@@ -4,9 +4,7 @@ Created on Thu May 10 16:05:10 2018
 
 @author: Aldo Contreras
 """
-# Importing the libraries
-# import numpy as np
-# import matplotlib.pyplot as plt
+
 import pandas as pd
 
 def usrDataFnc():
