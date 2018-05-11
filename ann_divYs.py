@@ -25,11 +25,11 @@ from keras.layers import Dropout
 import usrInput
 
 def importAndPrepare(X, y):
-    y0 = y[:,0]
-    y1 = y[:,1]
-    y2 = y[:,2]
+    y0 = y[:,[0]]
+    y1 = y[:,[1]]
+    y2 = y[:,[2]]
     try:
-        y3 = y[:,3]
+        y3 = y[:,[3]]
     except IndexError:
         y3 = 0
     return(X, y0, y1, y2, y3)
