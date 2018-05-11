@@ -12,19 +12,20 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from pandas import DataFrame
 from pandas import concat
-
 # Importing the training set
-dataset = pd.read_csv('data/comboAll.csv')
-X = dataset.iloc[:, 20:35].values   # FlexS
-y = dataset.iloc[:, 13:17].values   # IMUq
+import usrInput
+
+[input, target] = usrInput.getDataset()
+X = input
+y = target
 training_set = np.append(y, X, axis = 1)
 
 # Feature Scaling
 from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range=(0, 1))
 training_set_scaled = sc.fit_transform(training_set)
-flexSens_set_scaled = sc.fit_transform(flexSens)
-IMUquat_set_scaled  = sc.fit_transform(IMUquat)
+flexSens_set_scaled = sc.fit_transform(X)
+IMUquat_set_scaled  = sc.fit_transform(y)
 # Creating a data structure with 60 timesteps and 1 output (can be other number, based on experience)
 X_train = []
 y_train = []
@@ -32,8 +33,8 @@ y_train = []
 timeSteps = 10
 numSamples = len(training_set_scaled)
 numData = len(training_set_scaled[0])
-nInputs = len(flexSens[0])
-nOutputs = len(IMUquat[0])
+nInputs = len(X[0])
+nOutputs = len(y[0])
 
 for nums in range(numData):
     for i in range(timeSteps, numSamples):
