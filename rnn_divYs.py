@@ -24,16 +24,19 @@ from keras.layers import LSTM
 from keras.layers import Dropout
 
 # Importing the dataset
-def importData():
-    dataset = pd.read_csv('data/comboAll.csv')
-    X = dataset.iloc[:, 20:35].values	# flex sensor dataset
-    y0 = dataset.iloc[:, 13:14].values		# IMU Quat1 dataset.iloc[:, 13:17].values
-    y1 = dataset.iloc[:, 14:15].values		# IMU Quat2
-    y2 = dataset.iloc[:, 15:16].values		# IMU Quat3
-    y3 = dataset.iloc[:, 16:17].values		# IMU Quat4
+import usrInput
+
+def importAndPrepare(X, y):
+    y0 = y[:,[0]]
+    y1 = y[:,[1]]
+    y2 = y[:,[2]]
+    try:
+        y3 = y[:,[3]]
+    except IndexError:
+        y3 = 0
     return(X, y0, y1, y2, y3)
 
-def classifierAnn(X, y):
+def classifierRnn(X, y):
     # Feature Scaling
     training_set = np.append(y, X, axis = 1)
     #sc = MinMaxScaler(feature_range = (0, 1))
@@ -63,7 +66,7 @@ def classifierAnn(X, y):
     regressor.add(Dropout(0.2))
     regressor.add(Dense(units = 1))
     regressor.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
-    regressor.fit(X_train, y_train, epochs = 100, batch_size = 32)
+    regressor.fit(X_train, y_train, epochs = 300, batch_size = 32)
 
     X_test = X_train
     predicted = regressor.predict(X_test)
@@ -88,16 +91,13 @@ def plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3):
     plt.show()
 
 def main():
-    [X, y0, y1, y2, y3] = importData()
-    # y0
-    [regressor_y0, y_pred0] = classifierAnn(X, y0)
-    # y1
-    [regressor_y1, y_pred1] = classifierAnn(X, y1)
-    # y2
-    [regressor_y2, y_pred2] = classifierAnn(X, y2)
-    # y3
-    [regressor_y3, y_pred3] = classifierAnn(X, y3)
-    # Plot all
+    [input, target] = usrInput.getDataset()
+    [X, y0, y1, y2, y3] = importAndPrepare(input, target)
+    [regressor_y0, y_pred0] = classifierRnn(X, y0)          # y0
+    [regressor_y1, y_pred1] = classifierRnn(X, y1)          # y1
+    [regressor_y2, y_pred2] = classifierRnn(X, y2)          # y2
+    if y3 != 0:[regressor_y3, y_pred3] = classifierRnn(X, y3)
+    else: y_pred3 = 0
     plotData(y0, y1, y2, y3, y_pred0, y_pred1, y_pred2, y_pred3)
 
 if __name__ == "__main__":
