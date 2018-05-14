@@ -7,7 +7,7 @@ Created on Thu May 10 16:05:10 2018
 
 import pandas as pd
 
-def usrDataFnc():
+def kindOfDataFnc():
     while True:
         try:
             prompt = ('[0]All [1]COMBO [2]CRUZEXT [3]CRUZINT [4]ELEFRONT [5]LATERAL [6]ROTZ \nTest: ')
@@ -16,6 +16,9 @@ def usrDataFnc():
                 break
         except ValueError:
             print('Select a number between 0 and 6')
+    return kindOfData
+
+def kindOfTestFnc():
     while True:
         try:
             prompt = ('Kind\n [1] FlexS vs ShoulderAng\n [2] FlexS+IMUq vs ShoulderAng\n '
@@ -26,7 +29,7 @@ def usrDataFnc():
                 break
         except ValueError:
             print('ValueError')
-    return(kindOfData, kindOfTest)
+    return kindOfTest
 
 def loadWSFunc(kindOfData):
     # [0]All, [1]COMBO, [2]CRUZEXT, [3]CRUZINT, [4]ELEFRONT, [5]LATERAL, [6]ROTZ
@@ -72,7 +75,8 @@ def dataToRNN(dataset, kindOfTest):
     return (input, target)
 
 def getDataset():
-    [kindOfData, kindOfTest]=usrDataFnc()
+    kindOfData = kindOfDataFnc()
+    kindOfTest = kindOfTestFnc()
     dataset = loadWSFunc(kindOfData)
     [input, target] = dataToRNN(dataset, kindOfTest)
     return(input, target)
