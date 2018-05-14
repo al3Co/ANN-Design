@@ -8,7 +8,7 @@ Created on Wed Apr 18 16:05:10 2018
 from math import ceil
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+# import pandas as pd
 
 # Importing sklearn tools for prepare data
 from sklearn.model_selection import train_test_split
@@ -43,11 +43,11 @@ def createANN(X, X_train, X_test, y_train):
     unit = ceil((colX + col)/2)
 
     classifier = Sequential()
-    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh', input_dim = colX))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'relu', input_dim = colX)) # relu relu sigmoid
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'tanh'))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'relu'))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = col, kernel_initializer = 'uniform', activation = 'linear')) #tanh linear
+    classifier.add(Dense(units = col, kernel_initializer = 'uniform', activation = 'sigmoid')) #tanh tanh linear
     classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
     classifier.fit(X_train, y_train, batch_size = 27, epochs = 300)
     # Predicting the Test set results
