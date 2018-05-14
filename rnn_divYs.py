@@ -11,13 +11,13 @@ Created on Thu Apr 19 16:47:44 2018
 # Importing the libraries
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
+# import pandas as pd
 
 # Importing sklearn tools for prepare data
 from sklearn.preprocessing import MinMaxScaler
 
 # Importing the Keras libraries and packages
-#import keras
+# import keras
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
@@ -39,9 +39,9 @@ def importAndPrepare(X, y):
 def classifierRnn(X, y):
     # Feature Scaling
     training_set = np.append(y, X, axis = 1)
-    #sc = MinMaxScaler(feature_range = (0, 1))
-    #training_set_scaled = sc.fit_transform(training_set)
-    training_set_scaled = training_set
+    sc = MinMaxScaler(feature_range = (0, 1))
+    training_set_scaled = sc.fit_transform(training_set)
+    # training_set_scaled = training_set
     # Creating a data structure with 60 timesteps and 1 output
     X_train = []
     y_train = []
