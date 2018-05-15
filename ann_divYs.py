@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 # Importing sklearn tools for prepare data
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-
+from sklearn.preprocessing import MinMaxScaler
 # Importing the Keras libraries and packages
 #import keras
 from keras.models import Sequential
@@ -35,25 +35,32 @@ def importAndPrepare(X, y):
     return(X, y0, y1, y2, y3)
 
 def classifierAnn(X, y):
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.1, random_state = 0)
-    sc = StandardScaler()
+    # [0.2,0.8] or from [0.3,0.7]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.15, random_state = 0)
+    # sc = StandardScaler()
+    sc = MinMaxScaler(feature_range = (0.2, 0.8))
     X_train = sc.fit_transform(X_train)
     y_train = sc.fit_transform(y_train)
 
     [rowX, colX] = np.shape(X_train)
-    # [row, col] = np.shape(y_train)
-    col = 1
-    unit = ceil((colX + col)/2)
-
+    colY = 1
+    unit = ceil((colX + colY)/2)
+    optim, lossT = 'adam', 'mean_squared_error'
+    batchS, nEpochs = 32, 100
     classifier = Sequential()
-    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'relu', input_dim = colX)) # relu relu sigmoid
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'sigmoid', input_dim = colX)) # relu relu sigmoid
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = unit, kernel_initializer = 'uniform', activation = 'sigmoid'))
     # classifier.add(Dropout(rate = 0.1))
-    classifier.add(Dense(units = col, kernel_initializer = 'uniform', activation = 'sigmoid')) #tanh tanh linear
-    classifier.compile(optimizer = 'nadam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
-    classifier.fit(X_train, y_train, batch_size = 27, epochs = 300)
+    classifier.add(Dense(units = colY, kernel_initializer = 'uniform', activation = 'linear'))          # tanh tanh linear
+    classifier.compile(optimizer = optim, loss = lossT, metrics=['mae', 'acc'])
+    classifier.fit(X_train, y_train, batch_size = batchS, epochs = nEpochs)
     # Predicting the Test set results
+    scores = classifier.evaluate(X_test, y_test)
+    print('PARAMETERS --> dense units: {0}, optimizer: {1} loss: {2} batch_size: {3} epochs: {4}'
+        .format(unit, optim, lossT, batchS, nEpochs))
+    print("{0}: {1} --> {2}: {3} %"
+        .format(classifier.metrics_names[1], scores[1], classifier.metrics_names[2], scores[2]*100))
     y_pred = classifier.predict(X)
     return(classifier, y_pred)
 
