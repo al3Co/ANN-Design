@@ -1,7 +1,6 @@
 
-# create a method to do all ANNs RNNs and save on a dictionary
-# - list all options available
-# - do for cycles
+# method to do all ANNs & RNNs and save on a dictionary the results given
+
 
 # options
 # [0]All [1]COMBO [2]CRUZEXT [3]CRUZINT [4]ELEFRONT [5]LATERAL [6]ROTZ
@@ -13,8 +12,11 @@ sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
 results = {}
 
-for mov in sortMov.keys():
-    print(mov)
+def reader():
+    for mov in sortMov.keys():
+        print(mov)
+    # for mov in movDict.values():
+    #     print(mov)
 
-# for mov in movDict.values():
-#     print(mov)
+if __name__ == "__main__":
+    reader()
