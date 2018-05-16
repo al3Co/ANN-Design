@@ -41,18 +41,6 @@ for nums in range(numData):
         X_train.append(training_set_scaled[(i-timeSteps):i, nums])
         y_train.append(training_set_scaled[i, nums])
 
-#for i in range(60, 1258):
-#    X_train.append(training_set_scaled[i-60:i, 0])
-#    y_train.append(training_set_scaled[i, 0])
-
-#for nums in range(len(flexSens_set_scaled[0])):
-#    for i in range(timeSteps, len(flexSens_set_scaled)):
-#        X_train.append(flexSens_set_scaled[(i-timeSteps):i, nums])
-#
-#for nums in range(len(IMUquat_set_scaled[0])):
-#    for i in range(timeSteps, len(IMUquat_set_scaled)):
-#        #y_train.append(IMUquat_set_scaled[(i-timeSteps):i, nums])
-#        y_train.append(IMUquat_set_scaled[i, nums])
 
 X_train, y_train = np.array(X_train), np.array(y_train)
 
