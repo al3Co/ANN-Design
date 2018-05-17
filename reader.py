@@ -9,8 +9,8 @@ movDict = {'all':0,'combo':1,'cruzext':2,'cruzint':3,'elefront':4,'lateral':5,'r
 sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'IMUq vs ShoulderAng':3, 'PCA vs Shoulder':4,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
-headers = ['Movement','Kind','classifier','loss_value-mean_absolute_error-acc','units',
-            'optimizer','loss','batch_size','epochs']
+headers = ['Movement','Kind','classifier','units','optimizer','loss',
+            'batch_size','epochs','loss_value-mean_absolute_error-acc']
 batch_size = 32
 numEpochs  = [100, 200]
 
@@ -26,7 +26,7 @@ def reader():
                 for nEpochs in numEpochs:
                     [X, y, X_train, X_test, y_train, y_test, sc] = ann_4Ys.importAndPrepare(input, target)
                     [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch_size, nEpochs)
-                    writer.writerow([movK, sortK, classifier, scores, unit, optim, lossT, batch_size, nEpochs])
+                    writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch_size, nEpochs, scores])
 
 if __name__ == "__main__":
     reader()
