@@ -14,7 +14,7 @@ headers = ['Movement','Kind','classifier','units','optimizer','loss',
 batch_size = 32
 numEpochs  = [100, 200]
 
-def reader():
+def readerANN():
     db = dataBaseClass.dataBase()
     with open(('results/resultsANN'+str(datetime.datetime.now())+'.csv'),'w') as resF:
         writer = csv.writer(resF, delimiter=',',lineterminator='\n',)
@@ -27,6 +27,11 @@ def reader():
                     [X, y, X_train, X_test, y_train, y_test, sc] = ann_4Ys.importAndPrepare(input, target)
                     [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch_size, nEpochs)
                     writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch_size, nEpochs, scores])
+
+def readerRNN():
+    db = dataBaseClass.dataBase()
+
+
 
 if __name__ == "__main__":
     reader()
