@@ -10,8 +10,8 @@ sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
 headers = ['Movement','Kind','Sequential','units','optimizer','loss',
             'batch_size','epochs','loss_value-mean_absolute_error-acc']
-batch_size = 32
-numEpochs  = [200, 500]
+batch_size = [10, 20, 32]
+numEpochs  = [300, 400]
 
 options = {'ANN':0, 'RNN':1}
 
@@ -27,11 +27,12 @@ def reader(optKey, optVal):
             for sortK, sortV in sortMov.items():
                 [input, target] = db.dataToRNN(dataset, sortV)
                 for nEpochs in numEpochs:
-                    if optVal == 0:
-                        [X, y, X_train, X_test, y_train, y_test, sc] = ann_4Ys.importAndPrepare(input, target)
-                        [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch_size, nEpochs)
-                    else: [classifier, scores, unit, optim, lossT] = rnn_4Ys.createRNN(input, target, batch_size, nEpochs)
-                    writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch_size, nEpochs, scores])
+                    for batch in batch_size:
+                        if optVal == 0:
+                            [X, y, X_train, X_test, y_train, y_test, sc] = ann_4Ys.importAndPrepare(input, target)
+                            [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch, nEpochs)
+                        else: [classifier, scores, unit, optim, lossT] = rnn_4Ys.createRNN(input, target, batch, nEpochs)
+                        writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch, nEpochs, scores])
 
 if __name__ == "__main__":
     for k, v in options.items():
