@@ -3,6 +3,7 @@
 import csv
 import dataBaseClass
 import ann_4Ys
+import datetime
 
 movDict = {'all':0,'combo':1,'cruzext':2,'cruzint':3,'elefront':4,'lateral':5,'rotz':6}
 sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
@@ -15,7 +16,7 @@ numEpochs  = [100, 200]
 
 def reader():
     db = dataBaseClass.dataBase()
-    with open('results.csv','w') as resF:
+    with open(('results/resultsANN'+str(datetime.datetime.now())+'.csv'),'w') as resF:
         writer = csv.writer(resF, delimiter=',',lineterminator='\n',)
         writer.writerow(headers)
         for movK, movV in movDict.items():
