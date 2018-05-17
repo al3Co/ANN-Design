@@ -24,7 +24,7 @@ def kindOfTestFnc():
         try:
             prompt = ('Kind\n [1] FlexS vs ShoulderAng\n [2] FlexS+IMUq vs ShoulderAng\n '
                     '[3] IMUq vs ShoulderAng\n [4] PCA vs Shoulder\n [5] FlexS vs IMUq\n '
-                    '[6] PCA vs IMUq\n Select: ')
+                    '[6] PCA vs IMUq\nSelect[]: ')
             kindOfTest = int(input(prompt))
             if (kindOfTest >= 1) and (kindOfTest <= 6):
                 break
