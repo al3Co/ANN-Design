@@ -37,6 +37,7 @@ def importAndPrepare(X, y):
     return(X, y0, y1, y2, y3)
 
 def classifierRnn(X, y):
+    from math import ceil
     # Feature Scaling
     training_set = np.append(y, X, axis = 1)
     sc = MinMaxScaler(feature_range = (0, 1))
@@ -55,21 +56,25 @@ def classifierRnn(X, y):
     # Reshaping
     X_train = np.reshape(X_train, (X_train.shape[0], X_train.shape[1], 1))
     # Initialising the RNN
+    [rowX, colX, le] = np.shape(X_train)
+    #[rowy, coly,] = np.shape(y_train)
+    unit = ceil((colX + 1)/2)
     regressor = Sequential()
-    regressor.add(LSTM(units = 50, return_sequences = True, input_shape = (X_train.shape[1], 1)))
+    regressor.add(LSTM(units = unit, return_sequences = True, input_shape = (X_train.shape[1], 1)))
     regressor.add(Dropout(0.2))
-    regressor.add(LSTM(units = 50, return_sequences = True))
+    regressor.add(LSTM(units = unit, return_sequences = True))
     regressor.add(Dropout(0.2))
-    regressor.add(LSTM(units = 50, return_sequences = True))
+    regressor.add(LSTM(units = unit, return_sequences = True))
     regressor.add(Dropout(0.2))
-    regressor.add(LSTM(units = 50))
+    regressor.add(LSTM(units = unit))
     regressor.add(Dropout(0.2))
     regressor.add(Dense(units = 1))
     regressor.compile(optimizer = 'adam', loss = 'mean_squared_error', metrics=['mae', 'acc'])
-    regressor.fit(X_train, y_train, epochs = 300, batch_size = 32)
+    regressor.fit(X_train, y_train, epochs = 2, batch_size = 32)
 
     X_test = X_train
     predicted = regressor.predict(X_test)
+    scores = regressor.evaluate(X_train, y_train)
     # predicted_stock_price = sc.inverse_transform(predicted)
     return(regressor, predicted)
 
