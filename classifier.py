@@ -8,10 +8,8 @@ import csv
 headers = ['Sequential','units','optimizer','loss',
             'batch_size','epochs','loss_value-mean_absolute_error-acc', 'Time']
 # DL parameters
-# batch_size = [10, 20, 32]
-batch_size = [32]
-# numEpochs  = [100 300]
-numEpochs  = [10]
+batch_size = [10, 20, 32]
+numEpochs  = [100 300]
 optim_lossT = ['adam', 'binary_crossentropy']
 activ = ['relu', 'sigmoid']
 # network = {'ANN':0, 'RNN':1, 'BM':2}
