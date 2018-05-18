@@ -43,13 +43,25 @@ class dataBase:
             input = dataset.iloc[:, 13:17].values   # IMUq
             target = dataset.iloc[:, 41:44].values  # ShoulderAng
         elif kindOfTest == 4:
-            input = dataset.iloc[:, 20:35].values   # TODO PCA analysis
+            A0A1A2 = dataset.iloc[:, 20:23].values
+            A6 = dataset.iloc[:, 26:27].values
+            input = np.concatenate([A0A1A2, A6], axis=1)
+            A8 = dataset.iloc[:, 28:29].values
+            input = np.concatenate([input, A8], axis=1)
+            A12 = dataset.iloc[:, 32:33].values
+            input = np.concatenate([input, A12], axis=1)    # PCA analysis
             target = dataset.iloc[:, 41:44].values  # ShoulderAng
         elif kindOfTest == 5:   # reviewed
             input = dataset.iloc[:, 20:35].values   # FlexS
             target = dataset.iloc[:, 13:17].values  # IMUq
         elif kindOfTest == 6:   # reviewed
-            input = dataset.iloc[:, 20:35].values   # TODO PCA analysis
+            A0A1A2 = dataset.iloc[:, 20:23].values
+            A6 = dataset.iloc[:, 26:27].values
+            input = np.concatenate([A0A1A2, A6], axis=1)
+            A8 = dataset.iloc[:, 28:29].values
+            input = np.concatenate([input, A8], axis=1)
+            A12 = dataset.iloc[:, 32:33].values
+            input = np.concatenate([input, A12], axis=1)    # PCA analysis
             target = dataset.iloc[:, 13:17].values   # IMUq
         else:
             input = None
