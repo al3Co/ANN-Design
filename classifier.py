@@ -1,14 +1,15 @@
 
+import time
 import numpy as np
 import pandas as pd
 import datetime
 import csv
 # specific parameters of the phenomenon
 headers = ['Sequential','units','optimizer','loss',
-            'batch_size','epochs','loss_value-mean_absolute_error-acc']
+            'batch_size','epochs','loss_value-mean_absolute_error-acc', 'Time']
 # DL parameters
 # batch_size = [10, 20, 32]
-batch_size = [1]
+batch_size = [32]
 # numEpochs  = [100 300]
 numEpochs  = [10]
 optim_lossT = ['adam', 'binary_crossentropy']
@@ -47,11 +48,12 @@ def classifierFunc(optKey, optVal, X, y):
         writer.writerow(headers)
         for nEpochs in numEpochs:
             for batch in batch_size:
+                t = time.time()
                 print('Global Progress: ', optKey, batch, nEpochs)
                 if optVal == 0: [classifier, scores, unit] = ann_4Ys.createANN(X, y, batch, nEpochs, optim_lossT, activ, option)
-                elif optVal == 1: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (nEpochs/10), optim_lossT, option)
+                elif optVal == 1: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (int(nEpochs/10)), optim_lossT, option)
                 elif optVal == 2: buildClassifierBoltzmann_Machines()
-                writer.writerow([classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores])
+                writer.writerow([classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores, (time.time() - t)])
 
 def main():
     [X_train, y_train, X_test, y_test] = getClassifierDataset() # to train get all movements data to test get combo data

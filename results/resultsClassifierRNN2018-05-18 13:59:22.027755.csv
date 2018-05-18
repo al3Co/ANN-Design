@@ -1,0 +1,2 @@
+Sequential,units,optimizer,loss,batch_size,epochs,loss_value-mean_absolute_error-acc,Time
+<keras.models.Sequential object at 0x7fdca41a2b38>,50,adam,binary_crossentropy,32,10,"[-27.715100112366752, 4.561899243370166, 0.19999453701174544]",457.99095368385315

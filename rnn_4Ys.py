@@ -32,28 +32,27 @@ def createRNN(X, y, batchS, nEpochs, optim_lossT, option):
     X_train, y_train = np.array(X_train), np.array(y_train)
     # Reshaping
     X_train = X_train.reshape((X_train.shape[0], 1, X_train.shape[1]))
-
     # Importing the Keras libraries and packages
     from keras.models import Sequential
     from keras.layers import Dense
     from keras.layers import LSTM
     from keras.layers import Dropout
     # properties
-    unit = 50
+    unit = 32
     # Initialising the RNN
     regressor = Sequential()
     # Adding the first LSTM layer and some Dropout regularisation
     regressor.add(LSTM(units = unit, return_sequences = True, input_shape = (X_train.shape[1], X_train.shape[2])))
-    regressor.add(Dropout(0.2))
+    #regressor.add(Dropout(0.2))
     # Adding a second LSTM layer and some Dropout regularisation
     regressor.add(LSTM(units = unit, return_sequences = True))
-    regressor.add(Dropout(0.2))
+    #regressor.add(Dropout(0.2))
     # Adding a third LSTM layer and some Dropout regularisation
     regressor.add(LSTM(units = unit, return_sequences = True))
-    regressor.add(Dropout(0.2))
+    #regressor.add(Dropout(0.2))
     # Adding a fourth LSTM layer and some Dropout regularisation
     regressor.add(LSTM(units = unit))
-    regressor.add(Dropout(0.2))
+    #regressor.add(Dropout(0.2))
     # Adding the output layer
     regressor.add(Dense(units = 1))
     # Compiling the RNN
@@ -80,7 +79,7 @@ def main():
     [X, y] = usrInput.getDataset()
     batchS, nEpochs = 32, 1
     optim_lossT = ['nadam', 'mean_squared_error']
-    option = 'reader'
+    option = 'other'
     [regressor, scores, unit] = createRNN(X, y, batchS, nEpochs, optim_lossT, option)
 
 if __name__ == "__main__":

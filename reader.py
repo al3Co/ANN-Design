@@ -1,5 +1,6 @@
 
 # method to run ANNs and RNNs and save the results given in the csv file
+import time
 import csv
 import dataBaseClass
 import datetime
@@ -10,7 +11,7 @@ sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'IMUq vs ShoulderAng':3, 'PCA vs Shoulder':4,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
 headers = ['Movement','Kind','Sequential','units','optimizer','loss',
-            'batch_size','epochs','loss_value-mean_absolute_error-acc']
+            'batch_size','epochs','loss_value-mean_absolute_error-acc', 'Time']
 option = 'reader'
 # DL parameters
 batch_size = [10, 20, 32]   # 10 20 32
@@ -33,10 +34,11 @@ def reader(optKey, optVal):
                 [X, y] = db.dataToRNN(dataset, sortV)
                 for nEpochs in numEpochs:
                     for batch in batch_size:
+                        t = time.time()
                         print('Global Progress: ', optKey, batch, nEpochs, movK, sortK)
                         if optVal == 0: [classifier, scores, unit] = ann_4Ys.createANN(X, y, batch, nEpochs, optim_lossT, activ, option)
-                        else: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (nEpochs/10), optim_lossT, option)
-                        writer.writerow([movK, sortK, classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores])
+                        else: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (int(nEpochs/10)), optim_lossT, option)
+                        writer.writerow([movK, sortK, classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores, (time.time() - t)])
 
 # main
 if __name__ == "__main__":
