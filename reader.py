@@ -33,6 +33,7 @@ def reader(optKey, optVal):
                             [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch, nEpochs)
                         else: [classifier, scores, unit, optim, lossT] = rnn_4Ys.createRNN(input, target, batch, nEpochs)
                         writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch, nEpochs, scores])
+                        print('Global Progress: ', optKey, batch, nEpochs, movK, sortK)
 
 if __name__ == "__main__":
     for k, v in options.items():
