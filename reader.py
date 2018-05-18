@@ -11,11 +11,13 @@ sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
 headers = ['Movement','Kind','Sequential','units','optimizer','loss',
             'batch_size','epochs','loss_value-mean_absolute_error-acc']
-
+option = 'reader'
 # DL parameters
-batch_size = [10, 20, 32]
-numEpochs  = [300, 400]
-options = {'ANN':0, 'RNN':1}
+batch_size = [10, 20, 32]   # 10 20 32
+numEpochs  = [300, 400]     # 300 400
+optim_lossT = ['nadam', 'mean_squared_error']
+activ = ['sigmoid', 'linear']
+network = {'ANN':0, 'RNN':1}
 
 # function to run DL using dataset from data floder
 def reader(optKey, optVal):
@@ -28,16 +30,15 @@ def reader(optKey, optVal):
         for movK, movV in movDict.items():
             dataset = db.loadWSFunc(movV)
             for sortK, sortV in sortMov.items():
-                [input, target] = db.dataToRNN(dataset, sortV)
+                [X, y] = db.dataToRNN(dataset, sortV)
                 for nEpochs in numEpochs:
                     for batch in batch_size:
-                        if optVal == 0:
-                            [X, y, X_train, X_test, y_train, y_test, sc] = ann_4Ys.importAndPrepare(input, target)
-                            [classifier, scores, unit, optim, lossT] = ann_4Ys.createANN(X_train, X_test, y_train, y_test, batch, nEpochs)
-                        else: [classifier, scores, unit, optim, lossT] = rnn_4Ys.createRNN(input, target, batch, nEpochs)
-                        writer.writerow([movK, sortK, classifier, unit, optim, lossT, batch, nEpochs, scores])
                         print('Global Progress: ', optKey, batch, nEpochs, movK, sortK)
+                        if optVal == 0: [classifier, scores, unit] = ann_4Ys.createANN(X, y, batch, nEpochs, optim_lossT, activ, option)
+                        else: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (nEpochs/10), optim_lossT, option)
+                        writer.writerow([movK, sortK, classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores])
+
 # main
 if __name__ == "__main__":
-    for k, v in options.items():
+    for k, v in network.items():
         reader(k,v)
