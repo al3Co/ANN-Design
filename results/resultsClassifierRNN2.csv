@@ -1,0 +1,7 @@
+Sequential,units,optimizer,loss,batch_size,epochs,loss_value,Absolute_Error,Acc,Time,Deep Learn
+<keras.models.Sequential object at 0x7f3880635080>,32,adam,binary_crossentropy,10,100,40.915219668233,2.6446847,0.20,'8,715.87',RNN
+<keras.models.Sequential object at 0x7f387b6c4908>,32,adam,binary_crossentropy,20,100,-27.715100187062,4.1040651,0.20,'4,465.96',RNN
+<keras.models.Sequential object at 0x7f387a01df28>,32,adam,binary_crossentropy,32,100,-27.715100187062,3.0584090,0.20,'2,891.72',RNN
+<keras.models.Sequential object at 0x7f3878095470>,32,adam,binary_crossentropy,10,300,40.915219668233,2.6240344,0.20,'26,158.32',RNN
+<keras.models.Sequential object at 0x7f3859f20828>,32,adam,binary_crossentropy,20,300,-27.715013094003,3.3665741,0.20,'13,148.39',RNN
+<keras.models.Sequential object at 0x7f3857763c88>,32,adam,binary_crossentropy,32,300,-27.715100187062,1.4375971,0.20,'8,321.48',RNN

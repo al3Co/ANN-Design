@@ -1,0 +1,23 @@
+Movement,Kind,Sequential,units,optimizer,loss,batch_size,epochs,loss,Absolute_Error,Acc,Deep Learn
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f80e9955860>,9,nadam,mean_squared_error,10,300,0.024536358557,0.10965650729,0.554676404950,ANN
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f80e9955a20>,9,nadam,mean_squared_error,20,300,0.043986839830,0.15987317179,0.500507202272,ANN
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f80c6aa08d0>,9,nadam,mean_squared_error,32,300,0.047988983864,0.16689785275,0.503347534997,ANN
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f80c65c0d68>,9,nadam,mean_squared_error,10,400,0.099451428640,0.20972011696,0.475552850477,ANN
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f808b7e9a20>,9,nadam,mean_squared_error,20,400,0.050722433650,0.14824824237,0.528910529519,ANN
+all,FlexS vs ShoulderAng,<keras.models.Sequential object at 0x7f808ab60f98>,9,nadam,mean_squared_error,32,400,0.049060552640,0.14958949413,0.558328261311,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808ab52588>,11,nadam,mean_squared_error,10,300,0.010372236078,0.07391247788,0.646987218503,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808a8a85f8>,11,nadam,mean_squared_error,20,300,0.010228320336,0.07543778501,0.681476973017,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808a58bf98>,11,nadam,mean_squared_error,32,300,0.009138344277,0.06982272827,0.671332927572,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808a262dd8>,11,nadam,mean_squared_error,10,400,0.013500493383,0.08274162262,0.566443497667,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808a688f98>,11,nadam,mean_squared_error,20,400,0.010273739262,0.07226445035,0.649016027592,ANN
+all,FlexS+IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8089aadf60>,11,nadam,mean_squared_error,32,400,0.008719241948,0.06651442825,0.648813146683,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8089818da0>,4,nadam,mean_squared_error,10,300,0.008775373442,0.06558652408,0.596064110367,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8089509898>,4,nadam,mean_squared_error,20,300,0.008828360944,0.06633878192,0.598701562183,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f808923f978>,4,nadam,mean_squared_error,32,300,0.009257845674,0.06852265089,0.572124163116,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8088fd8278>,4,nadam,mean_squared_error,10,400,0.008381695588,0.06458676196,0.594441063096,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8088fdb908>,4,nadam,mean_squared_error,20,400,0.008855439138,0.06638890880,0.603976465815,ANN
+all,IMUq vs ShoulderAng,<keras.models.Sequential object at 0x7f8088a87dd8>,4,nadam,mean_squared_error,32,400,0.009190360753,0.06787162746,0.579224994928,ANN
+all,PCA vs Shoulder,<keras.models.Sequential object at 0x7f80884e2320>,9,nadam,mean_squared_error,10,300,0.046139026163,0.15854605725,0.483262325015,ANN
+all,PCA vs Shoulder,<keras.models.Sequential object at 0x7f8088a61f28>,9,nadam,mean_squared_error,20,300,0.067872337571,0.16631220105,0.460539663218,ANN
+all,PCA vs Shoulder,<keras.models.Sequential object at 0x7f807ff7e9b0>,9,nadam,mean_squared_error,32,300,0.029915148147,0.12724393463,0.558328261311,ANN
+all,PCA vs Shoulder,<keras.models.Sequential object at 0x7f807fbca320>,9,nadam,mean_squared_error,10,400,0.054530738437,0.18312450294,0.484073848651,ANN
