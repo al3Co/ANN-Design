@@ -1,5 +1,6 @@
 function [gL, acc] = getBarData(value, AccVector)
-    % function to obtain the first element of "value" with the corresponding value of the vector
+    % function to obtain the first element of "value" with the corresponding value of the vector,
+    % find the first item with its highest value
     [movVal, gN, gL] = grp2idx(value);
     acc = [];
     increment = 1;
