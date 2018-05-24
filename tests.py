@@ -10,9 +10,7 @@ movDict = {'all':0,'combo':1,'cruzext':2,'cruzint':3,'elefront':4,'lateral':5,'r
 sortMov = {'FlexS vs ShoulderAng':1, 'FlexS+IMUq vs ShoulderAng':2,
             'IMUq vs ShoulderAng':3, 'PCA vs Shoulder':4,
             'FlexS vs IMUq':5, 'PCA vs IMUq':6}
-headers = ['Movement','Kind','Sequential','units','optimizer','loss',
-            'batch_size','epochs','loss_value-mean_absolute_error-acc', 'Time']
-option = 'reader'
+
 # DL parameters
 batch_size = [10, 20, 32]   # 10 20 32
 numEpochs  = [300, 400]     # 300 400
@@ -22,12 +20,14 @@ network = {'ANN':0, 'RNN':1}
 
 # function to run DL using dataset from data floder
 def reader(optKey, optVal):
+    count = 0
     for movK, movV in movDict.items():
         for sortK, sortV in sortMov.items():
             for nEpochs in numEpochs:
                 for batch in batch_size:
+                    count += 1
                     print('Global Progress: ', optKey, batch, nEpochs, movK, sortK)
-
+    print('Num NN: {}'.format(count))
 # main
 if __name__ == "__main__":
     for k, v in network.items():
