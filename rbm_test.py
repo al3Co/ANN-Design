@@ -13,8 +13,10 @@ from torch.autograd import Variable
 # Importing the dataset
 dataset = pd.read_csv('data/allMovements.csv')
 X_train = dataset.iloc[:, 20:35].values   # FlexS
-dataset = pd.read_csv('data/comboAll.csv')
+y_train = dataset.iloc[:, -1].values      # kindOfMov
+dataset = pd.read_csv('data/rotacionzAll.csv')
 X_test = dataset.iloc[:, 20:35].values    # FlexS
+y_test = dataset.iloc[:, -1].values       # kindOfMov
 del dataset
 
 # scaling data
@@ -22,6 +24,14 @@ from sklearn.preprocessing import MinMaxScaler
 sc = MinMaxScaler(feature_range = (-1, 1))
 X_train = sc.fit_transform(X_train)
 X_test = sc.fit_transform(X_test)
+
+# adding kindOfMov
+from sklearn.preprocessing import LabelBinarizer
+lb = LabelBinarizer()
+y_train_transf = lb.fit_transform(y_train)
+y_test_transf = lb.transform(y_test)
+X_train = np.concatenate([X_train, y_train_transf], axis=1)
+X_test = np.concatenate([X_test, y_test_transf], axis=1)
 
 # getting number of samples
 nb_samples = len(X_train)
@@ -53,9 +63,11 @@ class RBM():
         self.b += torch.sum((v0 - vk), 0)
         self.a += torch.sum((ph0 - phk), 0)
 
-nv = len(training_set[0])
-nh = 15
+nv = len(training_set[1])
+nh = len(training_set[0])
 rbm = RBM(nv, nh)
+
+pdb.set_trace() # breakpoint
 
 # Training the RBM
 nb_epoch = 10
@@ -80,7 +92,7 @@ for epoch in range(1, nb_epoch + 1):
 # Testing the RBM
 test_loss = 0
 s = 0.0
-pdb.set_trace() # breakpoint
+# pdb.set_trace() # breakpoint
 for id_user in range(nb_samples):
     v = training_set[id_user:id_user+1]
     vt = test_set[id_user:id_user+1]
