@@ -7,7 +7,7 @@ load('resultsANN2.mat')
 
 % rearrange table sorting the accuracy
 [rANNr,indANN] = sortrows(rRNN,11,'descend');
-k = 3;  % k = 1 means to plot from RNN_Results 
+k = 3;  % k = 3 means to plot from RNN_Results 
 
 % prepare data (Accuracy - Time)
 data = [rANNr.Acc rANNr.Time];
