@@ -36,6 +36,8 @@ X_test = np.concatenate([X_test, y_test_transf], axis=1)
 # getting number of samples
 nb_samples = len(X_train)
 
+pdb.set_trace() # breakpoint
+
 # Converting the data into Torch tensors
 training_set =np.array(X_train)
 test_set = np.array(X_test)
