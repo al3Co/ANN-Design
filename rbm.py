@@ -21,7 +21,7 @@ del dataset
 
 # scaling data
 from sklearn.preprocessing import MinMaxScaler
-sc = MinMaxScaler(feature_range = (-1, 1))
+sc = MinMaxScaler(feature_range = (0, 1))
 X_train = sc.fit_transform(X_train)
 X_test = sc.fit_transform(X_test)
 

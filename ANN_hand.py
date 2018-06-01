@@ -19,9 +19,9 @@ sc = MinMaxScaler(feature_range = (0, 1))
 X = sc.fit_transform(Xnp)
 y = sc.fit_transform(ynp)
 
-from ANNbyHandClass import ANNbyHand
+from scripts import ANNbyHandClass
 epoch = 50000
-ann = ANNbyHand(epoch)
+ann = ANNbyHandClass.ANNbyHand(epoch)
 output = ann.ANN(X,y)
 pdb.set_trace()
 outputInv = sc.inverse_transform(output)
