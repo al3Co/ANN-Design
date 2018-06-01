@@ -6,7 +6,7 @@ Created on Thu May 10 16:05:10 2018
 """
 
 import pandas as pd
-import dataBaseClass
+from scripts import dataBaseClass
 
 def kindOfDataFnc():
     while True:

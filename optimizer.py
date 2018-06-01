@@ -15,7 +15,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 
 # Importing the dataset
-import usrInput
+from scripts import usrInput
 
 def importAndPrepare(X, y):
     y0 = y[:,[0]]
