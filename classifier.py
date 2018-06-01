@@ -5,11 +5,11 @@ import pandas as pd
 import datetime
 import csv
 # specific parameters of the phenomenon
-headers = ['Sequential','units','optimizer','loss',
-            'batch_size','epochs','loss_value-mean_absolute_error-acc', 'Time']
+headers = ['Movement','Kind','Units','BatchSize',
+            'Epochs','mae','acc','Time','FileName','Network']
 # DL parameters
-batch_size = [10, 20, 32]
-numEpochs  = [100, 300]
+batch_size = [32]
+numEpochs  = [300]
 optim_lossT = ['adam', 'binary_crossentropy']
 activ = ['relu', 'sigmoid']
 # network = {'ANN':0, 'RNN':1, 'BM':2}
@@ -39,8 +39,8 @@ def decoding_inverse_transform(lb, y_pred):
     return(lb.inverse_transform(y_pred, threshold=None))
 
 def classifierFunc(optKey, optVal, X, y):
-    if optVal == 0: import ann_4Ys
-    elif optVal == 1: import rnn_4Ys
+    if optVal == 0: from scripts import annClass
+    elif optVal == 1: from scripts import rnnClass
     with open(('results/resultsClassifier'+ optKey + str(datetime.datetime.now())+'.csv'),'w') as resF:
         writer = csv.writer(resF, delimiter=',',lineterminator='\n',)
         writer.writerow(headers)
@@ -48,10 +48,17 @@ def classifierFunc(optKey, optVal, X, y):
             for batch in batch_size:
                 t = time.time()
                 print('Global Progress: ', optKey, batch, nEpochs)
-                if optVal == 0: [classifier, scores, unit] = ann_4Ys.createANN(X, y, batch, nEpochs, optim_lossT, activ, option)
-                elif optVal == 1: [classifier, scores, unit] = rnn_4Ys.createRNN(X, y, batch, (int(nEpochs/10)), optim_lossT, option)
-                elif optVal == 2: buildClassifierBoltzmann_Machines()
-                writer.writerow([classifier, unit, optim_lossT[0], optim_lossT[1], batch, nEpochs, scores, (time.time() - t)])
+                fileName = str(optKey + '_' + str(batch) + '_' + str(nEpochs) + '_classifier')
+                if optVal == 0:
+                    ann = annClass.ANNclass(batch, nEpochs, optim_lossT, activ, option)
+                    [model, mae, acc, units] = ann.ANN(X,y)
+                    ann.ANN_save(model, fileName)
+                elif optVal == 1:
+                    rnn = rnnClass.RNNclass(batch, (int(nEpochs/10)), optim_lossT, option)
+                    [model, mae, acc, units] = rnn.RNN(X,y)
+                    rnn.RNN_save(model, fileName)
+                else: buildClassifierBoltzmann_Machines()
+                writer.writerow(['all', 'all', units, batch, nEpochs, mae, acc, (time.time() - t), fileName, optKey])
 
 def main():
     [X_train, y_train, X_test, y_test] = getClassifierDataset() # to train get all movements data to test get combo data
