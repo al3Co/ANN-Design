@@ -1,0 +1,2 @@
+Movement,Kind,Units,BatchSize,Epochs,mae,acc,Time,FileName,Network
+all,all,10,32,300,0.016108895462145698,99.07154575975002,611.2673654556274,ANN_32_300_classifier,ANN

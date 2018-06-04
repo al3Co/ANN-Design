@@ -1,0 +1,2 @@
+Movement,Kind,Units,BatchSize,Epochs,mae,acc,Time,FileName,Network
+all,all,32,32,300,4.27195694325824,1.0925976509150505e-05,5419.942330360413,RNN_32_300_classifier,RNN
