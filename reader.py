@@ -17,8 +17,8 @@ headers = ['Movement','Kind','Units','BatchSize',
 
 option = 'reader'
 # DL parameters
-batch_size = [32]       # 10 20 32
-numEpochs  = [300]      # 300 400
+batch_size = [10, 20, 32]       # 10 20 32
+numEpochs  = [100, 300, 500]      # 300 400
 optim_lossT = ['nadam', 'mean_squared_error']
 activ = ['sigmoid', 'linear']
 network = {'ANN':0, 'RNN':1}
