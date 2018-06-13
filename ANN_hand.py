@@ -5,10 +5,13 @@ import numpy as np
 import pandas as pd
 
 # Importing the dataset
-dataset = pd.read_csv('data/allMovements.csv')
-Xnp = dataset.iloc[0:4, 20:35].values   # FlexS
-ynp = dataset.iloc[0:4, 41:44].values
+dataset = pd.read_csv('data/test06.csv')
+# Xnp = dataset.iloc[0:4, 26:32].values   # FlexSens
+# ynp = dataset.iloc[0:4, 16:20].values   # IMUs
+Xnp = dataset.iloc[:, 26:32].values   # FlexSens
+ynp = dataset.iloc[:, 16:20].values   # IMUs
 del dataset
+pdb.set_trace()
 
 Xnp = np.array(Xnp)    # Input
 ynp = np.array(ynp)    # Output
@@ -23,7 +26,7 @@ from scripts import ANNbyHandClass
 epoch = 50000
 ann = ANNbyHandClass.ANNbyHand(epoch)
 output = ann.ANN(X,y)
-pdb.set_trace()
+
 outputInv = sc.inverse_transform(output)
 E = (ynp - outputInv)
 print('max error: {}'.format(np.amax(E)))
