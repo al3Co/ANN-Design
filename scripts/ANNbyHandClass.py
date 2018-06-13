@@ -19,7 +19,7 @@ class ANNbyHand:
         # number of features in data set
         inputlayer_neurons = X.shape[1]
         # number of hidden layers neurons
-        hiddenlayer_neurons = int((X.shape[1] + y.shape[1])/2) + 30
+        hiddenlayer_neurons = int((X.shape[1] + y.shape[1])/2) * 10
         # number of neurons at output layer
         output_neurons = y.shape[1]
         print('input leyer: {0} hidden leyer: {1} output leyer: {2}'
