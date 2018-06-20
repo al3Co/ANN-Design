@@ -1,5 +1,5 @@
 
-# import pdb
+import pdb
 
 import numpy as np
 import pandas as pd
@@ -30,3 +30,5 @@ output = ann.ANN(X,y)
 outputInv = sc.inverse_transform(output)
 E = (ynp - outputInv)
 print('max error: {}'.format(np.amax(E)))
+pdb.set_trace()
+print('Done')
